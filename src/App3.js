@@ -1,11 +1,10 @@
 import React from "react";
 import {
   BrowserRouter as Router,
-//   Switch,
+  Switch,
   Route,
 //   Link,
-  NavLink,
-  withRouter
+  NavLink
 } from "react-router-dom";
 import styled from 'styled-components';
 
@@ -37,11 +36,9 @@ const Nav = styled.nav`
 `;
 
 export default function App() {
-    const user = {name:'Thomas', surname:'Philips'}
   return (
-   
+    <Router>
       <div>
-          <Router>
         <Nav>
           <ul>
             <li>
@@ -55,16 +52,25 @@ export default function App() {
             </li>
           </ul>
         </Nav>
-    
 
-    <Route exact path="/" component={Home} />
-            
-    <Route exact path="/about" component={About} />
-
-    <Route exact path="/users" render={() => <OtherUser user={user} /> } />
-
+        {/* A <Switch> looks through its children <Route>s and
+            renders the first one that matches the current URL. */}
+        <Switch>
+        <Route exact path="/">
+            <Home />
+          </Route>
+          <Route path="/about">
+            <About />
+          </Route>
+          <Route path="/users">
+            <Users />
+          </Route>
+          <Route path="*">
+            <NoMatch />
+          </Route>
+        </Switch>
+      </div>
     </Router>
-    </div>
   );
 }
 
@@ -74,36 +80,18 @@ const NiceH2 = styled(SimpleH2)`
     color: ${props => props.$color}
 `;
 
-const Home = (props) =>
-console.log(props) ||
-  <h2>Home</h2>;
+function Home() {
+  return <h2>Home</h2>;
+}
 
-  const About = (props) =>
-  console.log(props) ||
-    <h2>About</h2>;
+function About() {
+  return <NiceH2 $color={'red'}>About</NiceH2>;
+}
 
-// function About() {
-//   return <NiceH2 $color={'red'}>About</NiceH2>;
-// }
+function Users() {
+  return <h2>Users</h2>;
+}
 
-const OtherUser = (props) => <UserHoc {...props}/>
-
-
-const Users = (props) =>
-console.log(props) ||
-  <h2>Users</h2>;
-
-
-const UserHoc = withRouter(Users)
-
-
-
-
-
-// function Users() {
-//   return <h2>Users</h2>;
-// }
-
-// function NoMatch() {
-//     return <h2>UPS 404</h2>;
-//   }
+function NoMatch() {
+    return <h2>UPS 404</h2>;
+  }
