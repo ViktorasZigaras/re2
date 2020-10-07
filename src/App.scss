@@ -1,0 +1,36 @@
+$sm: 740px;
+$md: 900px;
+$lg: 1280px;
+$xl: 1600px;
+$size: 400px;
+@import 'grid';
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    h1 {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 4px dotted black;
+        width: $size;
+        height: $size;
+        transition: all 0.2s;
+        &.green {
+            background-color: aqua;
+        }
+        &.blue {
+            background-color: cornflowerblue;
+        }
+        img {
+            width: 350px;
+            height: auto;
+        }
+    }
+}

@@ -1,109 +1,72 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-//   Switch,
-  Route,
-//   Link,
-  NavLink,
-  withRouter
-} from "react-router-dom";
-import styled from 'styled-components';
+import { compose } from 'recompose';
 
-const StyledLink = styled(NavLink)`
-color: green;
-text-decoration: none;
-transition: all 0.2s;
-font-weight: bold;
-border-bottom: 1px solid transparent;
-&:hover {
-    color: orange;
-}
-&.selected {
-    border-bottom: 1px solid white;
-}
-`;
 
-const Nav = styled.nav`
-    background: gray;
-    ul {
-        display: flex;
-        list-style: none;
-        margin: 0;
-        padding: 20px;
-        li {
-            padding: 5px;
-        }
+class App extends React.Component 
+{
+    constructor(props) {
+      super();
+      this.state = { color: 0, image: 0}
     }
-`;
 
-export default function App() {
-    const user = {name:'Thomas', surname:'Philips'}
-  return (
-   
-      <div>
-          <Router>
-        <Nav>
-          <ul>
-            <li>
-              <StyledLink exact to="/" activeClassName="selected">Home</StyledLink>
-            </li>
-            <li>
-              <StyledLink to="/about" activeClassName="selected">About</StyledLink>
-            </li>
-            <li>
-              <StyledLink to="/users" activeClassName="selected">Users</StyledLink>
-            </li>
-          </ul>
-        </Nav>
-    
+    changeColor = () => {
+      if (0 === this.state.color) {
+        this.setState({color: 1});
+      }
+      else {
+        this.setState({color: 0});
+      }
+    }
 
-    <Route exact path="/" component={Home} />
-            
-    <Route exact path="/about" component={About} />
+    changeImage = (e) => {
+      e.stopPropagation();
+      if (0 === this.state.image) {
+        this.setState({image: 1});
+      }
+      else {
+        this.setState({image: 0});
+      }
+    }
 
-    <Route exact path="/users" render={() => <OtherUser user={user} /> } />
-
-    </Router>
-    </div>
-  );
+    render() {
+      return (
+        <FullSquare 
+          changeColor={this.changeColor}
+          changeImage={this.changeImage}
+          color={this.state.color}
+          image={this.state.image}
+          imagesList={["racoon.jpg", "cat.jpg"]}
+        />
+      )
+    }
 }
 
-const SimpleH2 = props => <h2 {...props} />
+const Square = (props) => 
+<div>
+  <h1 className={props.color} onClick={props.changeColor}>
+    <img src={props.src} alt="picture" onClick={props.changeImage} />
+  </h1>
+</div>
 
-const NiceH2 = styled(SimpleH2)`
-    color: ${props => props.$color}
-`;
+const withColor = (Component) => (props) => {
+  const colorList = ["blue", "green"];
+  return <Component {...props} color={colorList[props.color]} />
+}
 
-const Home = (props) =>
-console.log(props) ||
-  <h2>Home</h2>;
+const withImage = (Component) => (props) => {
+  return <Component {...props} src={props.imagesList[props.image]} />
+}
 
-  const About = (props) =>
-  console.log(props) ||
-    <h2>About</h2>;
+// const Square1 = withColor(Square);
+// const Square2 = withImage(Square1);
 
-// function About() {
-//   return <NiceH2 $color={'red'}>About</NiceH2>;
-// }
+const withAll = compose (
+  withColor,
+  withImage
+);
 
-const OtherUser = (props) => <UserHoc {...props}/>
-
-
-const Users = (props) =>
-console.log(props) ||
-  <h2>Users</h2>;
-
-
-const UserHoc = withRouter(Users)
+const FullSquare = withAll(Square);
 
 
 
-
-
-// function Users() {
-//   return <h2>Users</h2>;
-// }
-
-// function NoMatch() {
-//     return <h2>UPS 404</h2>;
-//   }
+export default App;
