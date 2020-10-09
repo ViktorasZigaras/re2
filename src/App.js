@@ -6,7 +6,21 @@ class App extends React.Component
 {
     constructor(props) {
       super();
-      this.state = { color: 0, image: 0}
+      this.state = { color: 0, image: 0, clock: new Date() }
+    }
+
+    componentDidMount() {
+      this.timerID = setInterval(
+        () => this.doTick(), 1000
+      );
+    }
+
+    componentWillUnmount() {
+      clearInterval(this.timerID);
+    }
+
+    doTick = () => {
+      this.setState({clock: new Date})
     }
 
     changeColor = () => {
@@ -31,22 +45,48 @@ class App extends React.Component
     render() {
       return (
         <FullSquare 
+          clock={this.state.clock}
           changeColor={this.changeColor}
           changeImage={this.changeImage}
           color={this.state.color}
           image={this.state.image}
-          imagesList={["racoon.jpg", "cat.jpg"]}
+          // imagesList={["racoon.jpg", "cat.jpg"]}
         />
       )
     }
 }
 
-const Square = (props) => 
-<div>
-  <h1 className={props.color} onClick={props.changeColor}>
-    <img src={props.src} alt="picture" onClick={props.changeImage} />
-  </h1>
-</div>
+
+class Square extends React.Component 
+{
+    constructor(props) {
+      super();
+      this.state = {imagesList: ["racoon.jpg", "cat.jpg"]}
+    }
+
+    changeImageList = (e) => {
+      e.stopPropagation();
+      if("racoon.jpg" == this.state.imagesList[0]) {
+        this.setState({imagesList: ['dog.jpg', 'rabbit.png']})
+      }
+      else {
+        this.setState({imagesList: ["racoon.jpg", "cat.jpg"]})
+      }
+    }
+
+  render() {
+    return (
+  <div>
+    <h1 className={this.props.color} onClick={this.props.changeColor}>
+      <img src={this.state.imagesList[this.props.image]} alt="picture" onClick={this.props.changeImage} />
+      <span>Clock: {this.props.clock.toLocaleTimeString()}</span>
+      <button onClick={this.changeImageList}>Change Photos</button>
+    </h1>
+  </div>
+    )
+  }
+}
+
 
 const withColor = (Component) => (props) => {
   const colorList = ["blue", "green"];
@@ -62,10 +102,11 @@ const withImage = (Component) => (props) => {
 
 const withAll = compose (
   withColor,
-  withImage
+  
 );
 
 const FullSquare = withAll(Square);
+
 
 
 

@@ -1,0 +1,14 @@
+.list-astra {
+    width: 600px;
+    height: 400px;
+    background-color: crimson;
+    &__container {
+        width: 250px;
+        height: 250px;
+        background-color: darkgoldenrod;
+        &__title {
+            color: white;
+            background: darkgreen;
+        }
+    }
+}
