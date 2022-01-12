@@ -39,21 +39,21 @@ export class Square extends React.Component {
 
     return (
 
-      <div>
-        <h1 className={className} onClick={onChangeColorClick}>
-          <img src={src} alt="" onClick={onChangeImageClick} />
-          <span>Clock: {clock}</span>
-          <button onClick={onChangeImageListClick}>Change Photos</button>
-        </h1>
-      </div>
-
       // <div>
-      //   <h1 className={this.props.color} onClick={this.props.changeColor}>
-      //     <img src={this.state.imagesList[this.state.imageState]} alt="" onClick={this.changeImage} />
-      //     <span>Clock: {this.props.clock.toLocaleTimeString()}</span>
-      //     <button onClick={this.changeImageList}>Change Photos</button>
+      //   <h1 className={className} onClick={onChangeColorClick}>
+      //     <img src={src} alt="" onClick={onChangeImageClick} />
+      //     <span>Clock: {clock}</span>
+      //     <button onClick={onChangeImageListClick}>Change Photos</button>
       //   </h1>
       // </div>
+
+      <div>
+        <h1 className={this.props.color} onClick={this.props.changeColor}>
+          <img src={this.state.imagesList[this.state.imageState]} alt="" onClick={this.changeImage} />
+          <span>Clock: {this.props.clock.toLocaleTimeString()}</span>
+          <button onClick={this.changeImageList}>Change Photos</button>
+        </h1>
+      </div>
 
       // <ImageSquare
       //   changeImage={this.changeImage}
